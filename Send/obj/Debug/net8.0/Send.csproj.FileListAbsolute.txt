@@ -17,3 +17,4 @@ D:\RabbitMQ\Send\obj\Debug\net8.0\refint\Send.dll
 D:\RabbitMQ\Send\obj\Debug\net8.0\Send.pdb
 D:\RabbitMQ\Send\obj\Debug\net8.0\Send.genruntimeconfig.cache
 D:\RabbitMQ\Send\obj\Debug\net8.0\ref\Send.dll
+D:\RabbitMQ\Send\obj\Debug\net8.0\Send.sourcelink.json

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "QK0PMOEIZOkz3r+v7UEn0ifh539WbYjOBnPWQesvIRM=",
+  "Source": "Chat_RabbitMQ",
+  "BasePath": "_content/Chat_RabbitMQ",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,86 @@
+﻿<script>
+    $(document).ready(function () {
+        const userQueues = {
+            user1: { sendTo: "user2Queue", receiveFrom: "user1Queue", chatBox: "#chatBoxUser1" },
+            user2: { sendTo: "user1Queue", receiveFrom: "user2Queue", chatBox: "#chatBoxUser2" }
+        };
+
+        let chatHistory = { user1: [], user2: [] };
+
+        // Function to display messages for each user
+        function displayMessages(user) {
+            let chatBox = $(userQueues[user].chatBox);
+            chatBox.html("");  // Clear before re-rendering
+            
+            chatHistory[user].forEach(msg => {
+                chatBox.append(<div><b>${msg.sender}:</b> ${msg.text}</div>);
+            });
+
+            // Auto-scroll to the latest message
+            chatBox.scrollTop(chatBox[0].scrollHeight);
+        }
+
+        // Function to fetch messages for both users
+        function fetchMessages(user) {
+            const receiveQueue = userQueues[user].receiveFrom;
+
+            $.ajax({
+                url: http://localhost:5209/api/Message/receive?queueName=${receiveQueue},
+                type: 'get',
+                success: function (response) {
+                    if (response) {
+                        const sender = user === 'user1' ? 'Mansi' : 'Nency';
+
+                        // Avoid duplicate messages
+                        if (!chatHistory[user].some(msg => msg.text === response && msg.sender === sender)) {
+                            chatHistory[user].push({ sender: sender, text: response });
+                            displayMessages(user);
+                        }
+                    }
+                },
+                error: function (error) {
+                    console.error("Error receiving messages: ", error.responseText);
+                }
+            });
+        }
+
+        // Function to send messages
+        function sendMessage(user, messageInput) {
+            const message = $(messageInput).val();
+            const sendQueue = userQueues[user].sendTo;
+
+            $.ajax({
+                url: http://localhost:5209/api/Message/send?queueName=${sendQueue},
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(message),
+                success: function () {
+                    chatHistory[user].push({ sender: "You", text: message });
+                    displayMessages(user);
+                    $(messageInput).val('');
+                },
+                error: function (error) {
+                    alert("Error sending message: " + error.responseText);
+                }
+            });
+        }
+
+        // Send Message - User 1
+        $('#sendMessageFormUser1').on('submit', function (e) {
+            e.preventDefault();
+            sendMessage('user1', '#messageUser1');
+        });
+
+        // Send Message - User 2
+        $('#sendMessageFormUser2').on('submit', function (e) {
+            e.preventDefault();
+            sendMessage('user2', '#messageUser2');
+        });
+
+        // Fetch messages every 2 seconds for both users
+        setInterval(() => {
+            fetchMessages('user1');
+            fetchMessages('user2');
+        }, 2000);
+    });
+</script>

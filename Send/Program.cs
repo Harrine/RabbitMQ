@@ -17,8 +17,8 @@ using var connection = await factory.CreateConnectionAsync();
 using var channel = await connection.CreateChannelAsync();
 
 
-await channel.QueueDeclareAsync(queue: "harrine", durable: false, exclusive: false, autoDelete: false,
-    arguments: null);
+// await channel.QueueDeclareAsync(queue: "harrine", durable: false, exclusive: false, autoDelete: false,
+//     arguments: null);
 
 // const string message = "Hello Harrine!";
 // var body = Encoding.UTF8.GetBytes(message);
@@ -62,6 +62,8 @@ await channel.BasicConsumeAsync("krish", autoAck: true, consumer: consumer);
 
 
 // For Sending the message from harrine to krish
+await channel.QueueDeclareAsync(queue: "harrine", durable: false, exclusive: false, autoDelete: false,
+    arguments: null);
 Console.WriteLine("--------------------------------------------------");
 Console.WriteLine("To Exit -->> type Exit");
 while (true)
